@@ -1,4 +1,4 @@
-package com.sample.rdos.niisokb;
+package com.example.rdos.niisokb;
 
 import android.content.Intent;
 import android.os.Bundle;
