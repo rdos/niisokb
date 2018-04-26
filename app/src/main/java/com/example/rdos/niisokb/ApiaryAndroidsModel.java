@@ -7,24 +7,26 @@ public class ApiaryAndroidsModel {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private String mId;
+
     @SerializedName("title")
     @Expose
-    private String title;
+    private String mTitle;
+
     @SerializedName("img")
     @Expose
-    private String img;
+    private String mImg;
 
     public String getId() {
-        return id;
+        return mId;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getImg() {
-        return img;
+        return mImg;
     }
 
 }

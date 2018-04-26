@@ -3,4 +3,5 @@
     <dimen name="font_size__small">8sp</dimen>
     <dimen name="font_size__medium">16sp</dimen>
     <dimen name="font_size__large">20sp</dimen>
+    <dimen name="margin__large">20dp</dimen>
 </resources>

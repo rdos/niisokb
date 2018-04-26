@@ -2,6 +2,7 @@ package com.example.rdos.niisokb;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rdos.niisokb.api.ApiaryApi;
@@ -24,6 +25,7 @@ final class RestMan {
 
     public RestMan(Context context) {
         super();
+        Log.i("RestMan", "super");
         mContext = context;
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(20, TimeUnit.SECONDS)
@@ -41,26 +43,46 @@ final class RestMan {
     }
 
     public void sendAndroids() {
+        Log.i("RestMan", "sendAndroids");
         mApiaryApi.getData().enqueue(new retrofit2.Callback<List<ApiaryAndroidsModel>>() {
             @Override
             public void onResponse(Call<List<ApiaryAndroidsModel>> call, Response<List<ApiaryAndroidsModel>> response) {
+                Log.i("RestMan", "sendAndroids.onResponse");
                 mApiaryAndroids.addAll(response.body());
                 mCallback.onResponse();
             }
 
             @Override
             public void onFailure(Call<List<ApiaryAndroidsModel>> call, Throwable t) {
+                Log.i("RestMan", "sendAndroids.onFailure");
                 Toast.makeText(mContext, "An error occurred during networking", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void setCallBack(Callback callback) {
+        Log.i("RestMan", "setCallBack");
         mCallback = callback;
     }
 
-    public List<ApiaryAndroidsModel> getAndroids() {
+    private List<ApiaryAndroidsModel> getAndroids() {
+        Log.i("RestMan", "getAndroids");
         return mApiaryAndroids;
+    }
+
+    public String getAndroidsTitle(int position) {
+        return mApiaryAndroids.get(position).getTitle();
+    }
+
+    public String getAndroidsImg(int position) {
+        return mApiaryAndroids.get(position).getImg();
+    }
+
+    public int getAndroidsCount() {
+        if (mApiaryAndroids == null) {
+            return 0;
+        }
+        return mApiaryAndroids.size();
     }
 
     public interface Callback {

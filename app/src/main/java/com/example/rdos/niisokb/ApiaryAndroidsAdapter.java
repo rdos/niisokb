@@ -1,22 +1,13 @@
 package com.example.rdos.niisokb;
 
-import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.List;
 
 public class ApiaryAndroidsAdapter extends RecyclerView.Adapter<ApiaryAndroidsAdapter.ViewHolder> {
-
-    private List<ApiaryAndroidsModel> mApiarys;
-
-    public ApiaryAndroidsAdapter(List<ApiaryAndroidsModel> apiarys) {
-        mApiarys = apiarys;
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -26,31 +17,29 @@ public class ApiaryAndroidsAdapter extends RecyclerView.Adapter<ApiaryAndroidsAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ApiaryAndroidsModel apiary = mApiarys.get(position);
-        holder.title.setText(apiary.getTitle());
+        holder.mTitleTextView.setText(App.restMan.getAndroidsTitle(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mApiarys == null)
-            return 0;
-        return mApiarys.size();
+        return App.restMan.getAndroidsCount();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final Context mContext;
-        final TextView title;
+        final TextView mTitleTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mContext = itemView.getContext();
             itemView.setOnClickListener(this);
-            title = (TextView) itemView.findViewById(R.id.text_apiary_item_title);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.text_apiary_item_title);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(mContext, "onClick", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(v.getContext(), "onClick", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(v.getContext(), DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_POSITION, getAdapterPosition());
+            v.getContext().startActivity(intent);
         }
     }
 }

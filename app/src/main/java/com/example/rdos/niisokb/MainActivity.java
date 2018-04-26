@@ -1,7 +1,7 @@
 package com.example.rdos.niisokb;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements RestMan.Callback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("MainActivity", "onCreate");
         setContentView(R.layout.activity_main);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.posts_recycle_view);
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements RestMan.Callback 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        ApiaryAndroidsAdapter adapter = new ApiaryAndroidsAdapter(App.restMan.getAndroids());
+        ApiaryAndroidsAdapter adapter = new ApiaryAndroidsAdapter();
         mRecyclerView.setAdapter(adapter);
 
         App.restMan.setCallBack(this);
@@ -46,4 +47,5 @@ public class MainActivity extends AppCompatActivity implements RestMan.Callback 
         Log.i("MainActivity", "onResponse");
         mRecyclerView.getAdapter().notifyDataSetChanged();
     }
+
 }
