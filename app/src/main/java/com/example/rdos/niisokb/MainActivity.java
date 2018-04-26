@@ -2,48 +2,48 @@ package com.example.rdos.niisokb;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends AppCompatActivity implements RestMan.Callback {
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    RecyclerView mRecyclerView;
 
-public class MainActivity extends AppCompatActivity {
-
-    RecyclerView recyclerView;
-    List<PostModel> posts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        posts = new ArrayList<>();
-
-        recyclerView = (RecyclerView) findViewById(R.id.posts_recycle_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.posts_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        PostsAdapter adapter = new PostsAdapter(posts);
-        recyclerView.setAdapter(adapter);
+        ApiaryAndroidsAdapter adapter = new ApiaryAndroidsAdapter(App.restMan.getAndroids());
+        mRecyclerView.setAdapter(adapter);
 
-        App.getApi().getData("bash", 50).enqueue(new Callback<List<PostModel>>() {
+        App.restMan.setCallBack(this);
+        App.restMan.sendAndroids();
+        Button buttonUpdate = findViewById(R.id.button_update);
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<PostModel>> call, Response<List<PostModel>> response) {
-                posts.addAll(response.body());
-                recyclerView.getAdapter().notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<PostModel>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Log.i("MainActivity", "buttonUpdate.onClick");
+                App.restMan.sendAndroids();
             }
         });
+    }
+
+    @Override
+    public void onResponse() {
+        Log.i("MainActivity", "onResponse");
+        mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 }

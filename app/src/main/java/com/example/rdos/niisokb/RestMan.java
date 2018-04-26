@@ -1,22 +1,71 @@
-package com.sample.rdos.niisokb;
+package com.example.rdos.niisokb;
 
 
+import android.content.Context;
+import android.widget.Toast;
 
-final class RestMan extends Object {
+import com.example.rdos.niisokb.api.ApiaryApi;
 
-    private static final String PATTERN_FORMAT_TIME = "HH:mm:ss.SSS";
-    private static final long INTERVAL_ON_TICK__MILLIS = 111;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-    private final Callback mCallback;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-    public RestMan(Callback callback, long seconds) {
+final class RestMan {
+    private final ApiaryApi mApiaryApi;
+    private final Context mContext;
+    private Callback mCallback;
+    List<ApiaryAndroidsModel> mApiaryAndroids;
+
+    public RestMan(Context context) {
         super();
-        mCallback = callback;
+        mContext = context;
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://private-db05-jsontest111.apiary-mock.com")
+//                .baseUrl("http://thr.name")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+        mApiaryApi = retrofit.create(ApiaryApi.class);
+        mApiaryAndroids = new ArrayList<>();
+    }
 
+    public void sendAndroids() {
+        mApiaryApi.getData().enqueue(new retrofit2.Callback<List<ApiaryAndroidsModel>>() {
+            @Override
+            public void onResponse(Call<List<ApiaryAndroidsModel>> call, Response<List<ApiaryAndroidsModel>> response) {
+                mApiaryAndroids.addAll(response.body());
+                mCallback.onResponse();
+            }
+
+            @Override
+            public void onFailure(Call<List<ApiaryAndroidsModel>> call, Throwable t) {
+                Toast.makeText(mContext, "An error occurred during networking", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void setCallBack(Callback callback) {
+        mCallback = callback;
+    }
+
+    public List<ApiaryAndroidsModel> getAndroids() {
+        return mApiaryAndroids;
     }
 
     public interface Callback {
-        void onTimerTick();
-        void onTimerFinish();
+        void onResponse();
+//        void onTimerFinish();
     }
+
 }
