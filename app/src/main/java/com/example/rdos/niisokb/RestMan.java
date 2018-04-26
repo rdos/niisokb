@@ -48,6 +48,7 @@ final class RestMan {
             @Override
             public void onResponse(Call<List<ApiaryAndroidsModel>> call, Response<List<ApiaryAndroidsModel>> response) {
                 Log.i("RestMan", "sendAndroids.onResponse");
+                mApiaryAndroids.clear();
                 mApiaryAndroids.addAll(response.body());
                 mCallback.onResponse();
             }
@@ -74,8 +75,8 @@ final class RestMan {
         return mApiaryAndroids.get(position).getTitle();
     }
 
-    public String getAndroidsImg(int position) {
-        return mApiaryAndroids.get(position).getImg();
+    public String getAndroidsImgUrl(int position) {
+        return mApiaryAndroids.get(position).getImgUrl();
     }
 
     public int getAndroidsCount() {

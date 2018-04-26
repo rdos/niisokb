@@ -15,7 +15,7 @@ public class ApiaryAndroidsModel {
 
     @SerializedName("img")
     @Expose
-    private String mImg;
+    private String mImgUrl;
 
     public String getId() {
         return mId;
@@ -25,8 +25,8 @@ public class ApiaryAndroidsModel {
         return mTitle;
     }
 
-    public String getImg() {
-        return mImg;
+    public String getImgUrl() {
+        return mImgUrl;
     }
 
 }

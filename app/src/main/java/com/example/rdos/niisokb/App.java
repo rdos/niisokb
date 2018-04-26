@@ -12,7 +12,7 @@ public class App extends Application {
         restMan = new RestMan(getBaseContext());
     }
 
-    public static RestMan RestMan() {
-        return restMan;
-    }
+//    public static RestMan RestMan() {
+//        return restMan;
+//    }
 }
