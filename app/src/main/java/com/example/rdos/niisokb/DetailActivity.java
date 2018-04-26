@@ -3,9 +3,11 @@ package com.example.rdos.niisokb;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -15,20 +17,27 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
     private final String LOG_TAG = "DetailActivity";
     private int mPosition;
     private ImageView mImageView;
+    private TextView mTitleTextView;
     private float mInitialX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        mPosition = getIntent().getIntExtra(EXTRA_POSITION, -1);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
         Log.i(LOG_TAG, "mPosition=" + String.valueOf(mPosition));
         mImageView = (ImageView) findViewById(R.id.image_detail);
+        mTitleTextView = (TextView) findViewById(R.id.text_title_detail);
         mImageView.setOnTouchListener(this);
 //        DownloadImageTask downloadImageTask = new DownloadImageTask(mImageView);
 //        downloadImageTask.execute(App.restMan.getAndroidsImgUrl(mPosition));
 //        mNetworkImageView.setImageURI(Uri.parse(App.restMan.getAndroidsImgUrl(mPosition)));
-
         loadImage();
     }
 
@@ -40,13 +49,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
                 .placeholder(R.mipmap.ic_loading_image)
                 .error(R.mipmap.ic_loading_image_error)
                 .into(mImageView);
+        mTitleTextView.setText(App.restMan.getAndroidsTitle(mPosition));
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int action = event.getActionMasked();
-
-        switch (action) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mInitialX = event.getX();
                 break;
@@ -56,6 +64,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
 
                 if (mInitialX < finalX) {
                     Log.i(LOG_TAG, "Left to Right swipe");
+                    //TODO: 1
                     if (mPosition > 0) {
                         mPosition--;
                     }
@@ -64,6 +73,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
 
                 if (mInitialX > finalX) {
                     Log.i(LOG_TAG, "Right to Left swipe");
+                    //TODO: 1
                     if (mPosition < App.restMan.getAndroidsCount()) {
                         mPosition++;
                     }
@@ -72,6 +82,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

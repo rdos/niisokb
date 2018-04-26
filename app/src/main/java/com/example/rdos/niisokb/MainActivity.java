@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity implements RestMan.Callback 
 
     RecyclerView mRecyclerView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements RestMan.Callback 
 
         App.restMan.setCallBack(this);
         App.restMan.sendAndroids();
-        Button buttonUpdate = findViewById(R.id.button_update);
+        Button buttonUpdate = findViewById(R.id.button_update_main);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -11,7 +11,7 @@ public class ApiaryAndroidsAdapter extends RecyclerView.Adapter<ApiaryAndroidsAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.apiary_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_item, parent, false);
         return new ViewHolder(v);
     }
 
@@ -31,7 +31,7 @@ public class ApiaryAndroidsAdapter extends RecyclerView.Adapter<ApiaryAndroidsAd
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.text_apiary_item_title);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.text_title_main_item);
         }
 
         @Override
