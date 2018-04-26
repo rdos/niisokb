@@ -67,17 +67,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
                     //TODO: 1
                     if (mPosition > 0) {
                         mPosition--;
+                        loadImage();
                     }
-                    loadImage();
                 }
 
                 if (mInitialX > finalX) {
                     Log.i(LOG_TAG, "Right to Left swipe");
                     //TODO: 1
-                    if (mPosition < App.restMan.getAndroidsCount()) {
+                    if (mPosition < App.restMan.getAndroidsCount() - 1) {
                         mPosition++;
+                        loadImage();
                     }
-                    loadImage();
                 }
                 break;
         }
