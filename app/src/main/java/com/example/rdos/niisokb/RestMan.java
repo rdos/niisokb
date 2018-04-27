@@ -34,7 +34,6 @@ final class RestMan {
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://private-db05-jsontest111.apiary-mock.com")
-//                .baseUrl("http://thr.name")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

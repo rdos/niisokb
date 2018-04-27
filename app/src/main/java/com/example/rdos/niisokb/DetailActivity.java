@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity implements View.OnTouchListener {
 
-    public static final String EXTRA_POSITION = "ITEM_ID";
+    public static final String EXTRA_POSITION = "POSITION";
     private final String LOG_TAG = "DetailActivity";
     private int mPosition;
     private ImageView mImageView;
@@ -23,15 +23,19 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        if (savedInstanceState == null) {
+            mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        } else {
+            mPosition = savedInstanceState.getInt(EXTRA_POSITION);
+        }
+        Log.i(LOG_TAG, "mPosition=" + String.valueOf(mPosition));
 
+        setContentView(R.layout.activity_detail);
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        Log.i(LOG_TAG, "mPosition=" + String.valueOf(mPosition));
         mImageView = (ImageView) findViewById(R.id.image_detail);
         mTitleTextView = (TextView) findViewById(R.id.text_title_detail);
         mImageView.setOnTouchListener(this);
@@ -39,6 +43,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
 //        downloadImageTask.execute(App.restMan.getAndroidsImgUrl(mPosition));
 //        mNetworkImageView.setImageURI(Uri.parse(App.restMan.getAndroidsImgUrl(mPosition)));
         loadImage();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(EXTRA_POSITION, mPosition);
+        super.onSaveInstanceState(outState);
     }
 
     private void loadImage() {
@@ -52,6 +62,20 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
         mTitleTextView.setText(App.restMan.getAndroidsTitle(mPosition));
     }
 
+    private void loadImage(boolean isNextPosition) {
+        if (isNextPosition) {
+            if (mPosition < App.restMan.getAndroidsCount() - 1) {
+                mPosition++;
+                loadImage();
+            }
+        } else {
+            if (mPosition > 0) {
+                mPosition--;
+                loadImage();
+            }
+        }
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
@@ -60,24 +84,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
                 break;
             case MotionEvent.ACTION_UP:
                 float finalX = event.getX();
-                Log.i(LOG_TAG, "Action was UP");
-
                 if (mInitialX < finalX) {
                     Log.i(LOG_TAG, "Left to Right swipe");
-                    //TODO: 1
-                    if (mPosition > 0) {
-                        mPosition--;
-                        loadImage();
-                    }
+                    loadImage(false);
                 }
 
                 if (mInitialX > finalX) {
                     Log.i(LOG_TAG, "Right to Left swipe");
-                    //TODO: 1
-                    if (mPosition < App.restMan.getAndroidsCount() - 1) {
-                        mPosition++;
-                        loadImage();
-                    }
+                    loadImage(true);
                 }
                 break;
         }
