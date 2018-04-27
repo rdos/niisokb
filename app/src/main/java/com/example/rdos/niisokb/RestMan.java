@@ -1,6 +1,5 @@
 package com.example.rdos.niisokb;
 
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -87,7 +86,6 @@ final class RestMan {
 
     public interface Callback {
         void onResponse();
-//        void onTimerFinish();
     }
 
 }
