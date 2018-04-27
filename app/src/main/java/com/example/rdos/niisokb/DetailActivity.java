@@ -39,9 +39,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
         mImageView = (ImageView) findViewById(R.id.image_detail);
         mTitleTextView = (TextView) findViewById(R.id.text_title_detail);
         mImageView.setOnTouchListener(this);
-//        DownloadImageTask downloadImageTask = new DownloadImageTask(mImageView);
-//        downloadImageTask.execute(App.restMan.getAndroidsImgUrl(mPosition));
-//        mNetworkImageView.setImageURI(Uri.parse(App.restMan.getAndroidsImgUrl(mPosition)));
         loadImage();
     }
 
@@ -102,36 +99,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
-//    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-//        private ImageView mImageView;
-//
-//        public DownloadImageTask(ImageView imageView) {
-//            mImageView = imageView;
-//        }
-//
-//        protected Bitmap doInBackground(String... urls) {
-//            Bitmap bmp = null;
-//            try {
-//                URL url = new URL(urls[0]);
-//                bmp = BitmapFactory.decodeStream(url.openStream());
-//            } catch (Exception e) {
-//                //TODO: :(
-//                e.printStackTrace();
-//            }
-//            return bmp;
-//        }
-//
-//        protected void onPostExecute(Bitmap result) {
-//            mImageView.setImageBitmap(result);
-//        }
-//    }
 }
