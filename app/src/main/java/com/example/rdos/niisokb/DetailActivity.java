@@ -64,16 +64,18 @@ public class DetailActivity extends AppCompatActivity implements View.OnTouchLis
 
     private void loadImage(boolean isNextPosition) {
         if (isNextPosition) {
-            if (mPosition < App.restMan.getAndroidsCount() - 1) {
-                mPosition++;
-                loadImage();
-            }
+            mPosition++;
         } else {
-            if (mPosition > 0) {
-                mPosition--;
-                loadImage();
-            }
+            mPosition--;
         }
+
+        if (mPosition < 0) {
+            mPosition = App.restMan.getAndroidsCount() - 1;
+        }
+        if (mPosition >= App.restMan.getAndroidsCount()) {
+            mPosition = 0;
+        }
+        loadImage();
     }
 
     @Override
