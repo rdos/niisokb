@@ -11,8 +11,4 @@ public class App extends Application {
         super.onCreate();
         restMan = new RestMan(getBaseContext());
     }
-
-//    public static RestMan RestMan() {
-//        return restMan;
-//    }
 }

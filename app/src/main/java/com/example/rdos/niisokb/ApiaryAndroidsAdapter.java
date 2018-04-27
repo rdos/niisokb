@@ -36,7 +36,6 @@ public class ApiaryAndroidsAdapter extends RecyclerView.Adapter<ApiaryAndroidsAd
 
         @Override
         public void onClick(View v) {
-//            Toast.makeText(v.getContext(), "onClick", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(v.getContext(), DetailActivity.class);
             intent.putExtra(DetailActivity.EXTRA_POSITION, getAdapterPosition());
             v.getContext().startActivity(intent);
